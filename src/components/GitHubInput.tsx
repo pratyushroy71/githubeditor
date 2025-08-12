@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Github, Play, Loader, AlertCircle, CheckCircle } from 'lucide-react';
+import { Github, Play, Loader, AlertCircle, CheckCircle, Info } from 'lucide-react';
 
 interface GitHubInputProps {
   onSubmit: (url: string) => void;
@@ -21,6 +21,17 @@ const GitHubInput: React.FC<GitHubInputProps> = ({ onSubmit, isLoading, error })
 
   const isValidGitHubUrl = (url: string) => {
     return /^https:\/\/github\.com\/[\w-]+\/[\w.-]+$/.test(url);
+  };
+
+  const exampleUrls = [
+    'https://github.com/facebook/react',
+    'https://github.com/vuejs/vue',
+    'https://github.com/angular/angular',
+    'https://github.com/vercel/next.js'
+  ];
+
+  const handleExampleClick = (exampleUrl: string) => {
+    setUrl(exampleUrl);
   };
 
   return (
@@ -126,11 +137,42 @@ const GitHubInput: React.FC<GitHubInputProps> = ({ onSubmit, isLoading, error })
           </motion.button>
         </form>
 
+        {/* Example URLs */}
+        <motion.div
+          className="mt-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+        >
+          <div className="text-center mb-4">
+            <div className="flex items-center justify-center space-x-2 text-retro-amber font-mono text-sm">
+              <Info className="w-4 h-4" />
+              <span>TRY THESE POPULAR REPOSITORIES:</span>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {exampleUrls.map((exampleUrl, index) => (
+              <motion.button
+                key={exampleUrl}
+                onClick={() => handleExampleClick(exampleUrl)}
+                className="p-3 text-left border border-retro-green/20 bg-retro-dark/30 hover:border-retro-green/40 hover:bg-retro-dark/50 transition-all font-mono text-sm"
+                whileHover={{ scale: 1.02, borderColor: 'rgb(57, 255, 20)' }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 + index * 0.1 }}
+              >
+                <div className="text-retro-green truncate">{exampleUrl}</div>
+                <div className="text-retro-amber text-xs mt-1">Click to try</div>
+              </motion.button>
+            ))}
+          </div>
+        </motion.div>
+
         <motion.div
           className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
+          transition={{ delay: 0.8 }}
         >
           {[
             { icon: '⚡', text: 'Instant Setup' },
@@ -143,7 +185,7 @@ const GitHubInput: React.FC<GitHubInputProps> = ({ onSubmit, isLoading, error })
               whileHover={{ scale: 1.05, borderColor: 'rgb(57, 255, 20)' }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 + index * 0.1 }}
+              transition={{ delay: 1.0 + index * 0.1 }}
             >
               <div className="text-2xl mb-2">{feature.icon}</div>
               <div className="text-retro-amber font-mono text-sm">{feature.text}</div>
